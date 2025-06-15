@@ -54,7 +54,13 @@ contract CertificateInsurance {
     }
 
     // Register certificate
-    function registerCertificate(bytes32 _certHash, string memory _name, string memory _course, string memory _institution, address _holder) external onlyAdminOrOwner {
+    function registerCertificate(
+        bytes32 _certHash,
+        string memory _name,
+        string memory _course,
+        string memory _institution,
+        address _holder
+    ) external onlyAdminOrOwner {
         if (_holder == address(0)) revert InvalidAddress();
         if (certificates[_certHash].holder != address(0)) revert AlreadyExists();
 
@@ -78,14 +84,13 @@ contract CertificateInsurance {
     }
 
     // Public check
-    function isCertificateAuthentic(bytes32 _certHash) external view returns (bool, string memory, string memory, string memory) {
+    function isCertificateAuthentic(bytes32 _certHash)
+        external
+        view
+        returns (bool, string memory, string memory, string memory)
+    {
         Certificate memory cert = certificates[_certHash];
         if (cert.holder == address(0)) revert NotFound();
-        return (
-            cert.status == CertStatus.Verified,
-            cert.name,
-            cert.course,
-            cert.institution
-        );
+        return (cert.status == CertStatus.Verified, cert.name, cert.course, cert.institution);
     }
 }

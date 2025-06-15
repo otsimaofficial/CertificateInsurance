@@ -12,7 +12,7 @@ contract CertificateInsuranceTest is Test {
     bytes32 certHash;
 
     function setUp() public {
-        owner = address(this); 
+        owner = address(this);
         admin = vm.addr(1);
         user = vm.addr(2);
         certHash = keccak256("CERT123");
@@ -30,8 +30,8 @@ contract CertificateInsuranceTest is Test {
         vm.prank(admin);
         cert.registerCertificate(certHash, "Emmanuel", "Blockchain", "TechUni", user);
 
-        (, , , , CertificateInsurance.CertStatus status) = cert.certificates(certHash);
-        assertEq(uint(status), 0); // Unverified
+        (,,,, CertificateInsurance.CertStatus status) = cert.certificates(certHash);
+        assertEq(uint256(status), 0); // Unverified
     }
 
     function testVerifyCertificateByAdmin() public {
@@ -42,8 +42,8 @@ contract CertificateInsuranceTest is Test {
         vm.prank(admin);
         cert.verifyCertificate(certHash);
 
-        (, , , , CertificateInsurance.CertStatus status) = cert.certificates(certHash);
-        assertEq(uint(status), 1); // Verified
+        (,,,, CertificateInsurance.CertStatus status) = cert.certificates(certHash);
+        assertEq(uint256(status), 1); // Verified
     }
 
     function testPublicCheckAuthenticity() public {
@@ -53,7 +53,7 @@ contract CertificateInsuranceTest is Test {
         vm.prank(admin);
         cert.verifyCertificate(certHash);
 
-        (bool verified, , , ) = cert.isCertificateAuthentic(certHash);
+        (bool verified,,,) = cert.isCertificateAuthentic(certHash);
         assertTrue(verified);
     }
 
